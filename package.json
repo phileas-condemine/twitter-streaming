@@ -4,7 +4,7 @@
   "author": "stewartatsafe",
   "private": true,
   "scripts": {
-    "start": "node app"
+    "start": "npm install; node server;"
   },
   "dependencies": {
     "express": "*",
