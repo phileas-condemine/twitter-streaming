@@ -20,9 +20,9 @@ server.listen(process.env.PORT || 8081);
 
 //Setup rotuing for app
 app.use(express.static(__dirname + '/public'));
-app.get("/google1bb01cf67460edbd.html",function(req,res){
+/*app.get("/google1bb01cf67460edbd.html",function(req,res){
         res.sendfile('./google1bb01cf67460edbd.html');
-  })
+  })*/
 //Create web sockets connection.
 io.sockets.on('connection', function (socket) {
 
@@ -30,7 +30,7 @@ io.sockets.on('connection', function (socket) {
 
     if(stream === null) {
       //Connect to twitter stream passing in filter for entire world.
-      twit.stream('statuses/filter', {'locations':'-180,-90,180,90'}, function(stream) {
+      twit.stream('statuses/filter', {'locations':'-180,-90,180,90','track':'twitter'}, function(stream) {
           stream.on('data', function(data) {
               // Does the JSON result have coordinates
               if (data.coordinates){
