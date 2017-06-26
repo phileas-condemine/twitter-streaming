@@ -8,10 +8,10 @@ var twitter = require('twitter'),
 
 //Setup twitter stream api
 var twit = new twitter({
-  consumer_key: '<ENTER>',
-  consumer_secret: '<ENTER>',
-  access_token_key: '<ENTER>',
-  access_token_secret: '<ENTER>'
+  consumer_key: 'Ie3YkBZadsgVMtu2dF17l7nYF',
+  consumer_secret: '0W1KYWP9p6kCtEC3GjBVXPWrDLSI66GqadIjiNt7OaxJniW855',
+  access_token_key: '877868908757299200-VAUhyJrVJdaSbaSmo4bS2HTZG4JLUiV',
+  access_token_secret: '3JkhVTrzeiACWMjMAoTnG5Ne3kIRFMhtiG6MpmXjq2yys'
 }),
 stream = null;
 
@@ -83,4 +83,3 @@ io.sockets.on('connection', function (socket) {
     // they are connected and can start receiving Tweets
     socket.emit("connected");
 });
-
