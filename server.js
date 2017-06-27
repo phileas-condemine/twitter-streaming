@@ -37,11 +37,13 @@ io.sockets.on('connection', function (socket) {
                 if (data.coordinates !== null){
                   //If so then build up some nice json and send out to web sockets
                   var outputPoint = {"lat": data.coordinates.coordinates[0],"lng": data.coordinates.coordinates[1]};
+                  console.log("data coordinates: lat" + data.coordinates.coordinates[0] + " lon "+ data.coordinates.coordinates[1]);
 
                   socket.broadcast.emit("twitter-stream", outputPoint);
 
                   //Send out to web sockets channel.
                   socket.emit('twitter-stream', outputPoint);
+
                 }
                 else if(data.place){
                   if(data.place.bounding_box === 'Polygon'){
@@ -64,7 +66,7 @@ io.sockets.on('connection', function (socket) {
 
                   }
                 }
-              }
+              } else {console.log("no data input");}
               stream.on('limit', function(limitMessage) {
                 return console.log(limitMessage);
               });
