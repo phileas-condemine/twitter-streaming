@@ -36,18 +36,17 @@ function initialize() {
       liveTweets.push(tweetLocation);
       //Flash a dot onto the map quickly
       var image = "css/small-dot-icon.png";
-      console.log(data.text);
       var marker = new google.maps.Marker({
         position: tweetLocation,
         map: map,
-        title:data.text
+        title:data.title
         // ,icon: image
       });
       setTimeout(function(){
         marker.setMap(null);
       },5000);
       var infowindow = new google.maps.InfoWindow({
-        content: data.text
+        content: data.title
       });
       google.maps.event.addListener(marker, 'click', function() {
         infowindow.open(map,marker);
