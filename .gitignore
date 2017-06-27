@@ -1,8 +1,6 @@
 .DS_Store
 node_modules/
 data/
+data/*
 *.interim
-data/diagnostic.data/metrics.2017-06-27T09-23-36Z-00000
-*.interim
-data/diagnostic.data/metrics.2017-06-27T09-23-36Z-00000
-*.interim
+
