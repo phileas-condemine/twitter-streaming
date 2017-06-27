@@ -8,12 +8,8 @@ var twitter = require('twitter'),
     io = require('socket.io').listen(server);
 
 //Setup twitter stream api
-var twit = new twitter({
-  consumer_key: 'Ie3YkBZadsgVMtu2dF17l7nYF',
-  consumer_secret: '0W1KYWP9p6kCtEC3GjBVXPWrDLSI66GqadIjiNt7OaxJniW855',
-  access_token_key: '877868908757299200-VAUhyJrVJdaSbaSmo4bS2HTZG4JLUiV',
-  access_token_secret: '3JkhVTrzeiACWMjMAoTnG5Ne3kIRFMhtiG6MpmXjq2yys'
-}),
+var twitter_cred=require("./twitter_credentials.json");
+var twit = new twitter(twitter_cred),
 stream = null,
 // cd to twitter-streaming-nodejs/data
 // create mongod --dbpath . --port 27017
