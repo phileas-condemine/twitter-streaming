@@ -1,6 +1,6 @@
 function initialize() {
   //Setup Google Map
-  var myLatlng = new google.maps.LatLng(50,20);
+  var myLatlng = new google.maps.LatLng(50,10);
   var light_grey_style = [{"featureType":"landscape","stylers":[{"saturation":-100},{"lightness":65},{"visibility":"on"}]},{"featureType":"poi","stylers":[{"saturation":-100},{"lightness":51},{"visibility":"simplified"}]},{"featureType":"road.highway","stylers":[{"saturation":-100},{"visibility":"simplified"}]},{"featureType":"road.arterial","stylers":[{"saturation":-100},{"lightness":30},{"visibility":"on"}]},{"featureType":"road.local","stylers":[{"saturation":-100},{"lightness":40},{"visibility":"on"}]},{"featureType":"transit","stylers":[{"saturation":-100},{"visibility":"simplified"}]},{"featureType":"administrative.province","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":-25},{"saturation":-100}]},{"featureType":"water","elementType":"geometry","stylers":[{"hue":"#ffff00"},{"lightness":-25},{"saturation":-97}]}];
   var myOptions = {
     zoom: 5,
@@ -27,26 +27,31 @@ function initialize() {
   if(io !== undefined) {
     // Storage for WebSocket connections
     var socket = io.connect('/');
-
     // This listens on the "twitter-steam" channel and data is
     // received everytime a new tweet is receieved.
     socket.on('twitter-stream', function (data) {
-
+      console.log(JSON.stringify(data));
       //Add tweet to the heat map array.
       var tweetLocation = new google.maps.LatLng(data.lng,data.lat);
       liveTweets.push(tweetLocation);
-
       //Flash a dot onto the map quickly
       var image = "css/small-dot-icon.png";
+      console.log(data.text);
       var marker = new google.maps.Marker({
         position: tweetLocation,
         map: map,
-        icon: image
+        title:data.text
+        // ,icon: image
       });
       setTimeout(function(){
         marker.setMap(null);
-      },600);
-
+      },5000);
+      var infowindow = new google.maps.InfoWindow({
+        content: data.text
+      });
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.open(map,marker);
+      });
     });
 
     // Listens for a success response from the server to
