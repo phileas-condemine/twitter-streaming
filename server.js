@@ -7,6 +7,7 @@ var twitter = require('twitter'),
     MongoClient = require('mongodb').MongoClient,
     io = require('socket.io').listen(server);
 
+
 //Setup twitter stream api
 var twitter_cred=require("./twitter_credentials.json");
 var twit = new twitter(twitter_cred),
@@ -33,22 +34,29 @@ io.sockets.on('connection', function (socket) {
     if(stream === null) {
       //Connect to twitter stream passing in filter for entire world.
       console.log("init-connection to statuses/filter")
-      twit.stream('statuses/filter', {'track':'accident, carcrash, drunkdriver, firealarm, injury, traffic'}, function(stream) {
+      twit.stream('statuses/filter', {'locations':'-5,38,10,55'}, function(stream) {
+        stream.setMaxListeners(100);
           stream.on('data', function(data) {
               // Does the JSON result have coordinates
+              if (data.place !== null){
+              console.log(JSON.stringify(data));
+              if (data.place.country_code=="FR"){
+                MongoClient.connect(url_mongo, function(err, db) {
+                  if (err){
+                    console.log(err)
+                  }
+                  console.log("Connected correctly to server");
+                  db.collection('tweets').insert(data,function(err,records){
+                    if(err){console.log("error when writing to mongod:"+err)}
+                    console.log(records)
+                  });
+                  db.close();
+                });
+              }
+            }
               if (data.coordinates){
                 if (data.coordinates !== null){
-                  MongoClient.connect(url_mongo, function(err, db) {
-                    if (err){
-                      console.log(err)
-                    }
-                    console.log("Connected correctly to server");
-                    db.collection('tweets').insert(data,function(err,records){
-                      if(err){console.log("error when writing to mongod:"+err)}
-                      console.log(records)
-                    });
-                    db.close();
-                  });
+
                   //If so then build up some nice json and send out to web sockets
                   var outputPoint = {"lat": data.coordinates.coordinates[0],"lng": data.coordinates.coordinates[1]};
                   // console.log("data coordinates: lat" + data.coordinates.coordinates[0] + " lon "+ data.coordinates.coordinates[1]);
